@@ -82,7 +82,7 @@ innerSay() // 脚本错误
 
 作用域是分层的，内层作用域可以访问外层作用域的变量，反正则不行。可以看一下例子
 
-![](https://raw.githubusercontent.com/Zhangrunping/learningDocument/master/docs/image/scope1.png)
+![](https://raw.githubusercontent.com/Zhangrunping/learningDocument/master/docs/image/stack.png)
 
 最后输出 1,2,6
 
