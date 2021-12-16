@@ -82,9 +82,9 @@ innerSay() // 脚本错误
 
 作用域是分层的，内层作用域可以访问外层作用域的变量，反正则不行。可以看一下例子
 
-![](https://raw.githubusercontent.com/Zhangrunping/learningDocument/master/docs/image/stack.png)
+![](https://raw.githubusercontent.com/Zhangrunping/learningDocument/master/docs/image/scope1.png)
 
-最后输出 1,2,6
+最后输出 2, 4, 12
 
 - 泡泡 1 是全局作用域，有标识符 foo
 - 泡泡 2 作用域 foo，有标识符 a，bar，b

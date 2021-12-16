@@ -34,7 +34,7 @@ console.log('arr.__proto__', arr.__proto__)
 console.log('fn.__proto__', fn.__proto__)
 ```
 
-![](https://raw.githubusercontent.com/Zhangrunping/learningDocument/master/docs/image/stack.png)
+![](https://raw.githubusercontent.com/Zhangrunping/learningDocument/master/docs/image/prototype1.png)
 
 ##### 规则三 ———— 引用类型，隐式原型[[Prototype]]的属性值指向它的构造函数的显式原型 prototype 属性值
 
@@ -67,7 +67,7 @@ const nick = new Person('nick')
 nick.toString() // ƒ toString() { [native code] }
 ```
 
-![](https://raw.githubusercontent.com/Zhangrunping/learningDocument/master/docs/image/stack.png)
+![](https://raw.githubusercontent.com/Zhangrunping/learningDocument/master/docs/image/prototype2.png)
 
 按理说，nick 是 Person 构造函数生成的实例，而 Person 的 prototype 并没有 toString 方法，那么为什么 nick 实例能获取到 toString 方法呢？  
 这里就引出原型链的概念了，nick 实例先从自身出发查找，并没有 toString 方法。找不到就往上继续查找，找到 Person 构造函数的 prototype 属性，还没有找到。
@@ -76,7 +76,7 @@ nick.toString() // ƒ toString() { [native code] }
 ## 一张图片
 
 用图片描述原型链
-![](https://raw.githubusercontent.com/Zhangrunping/learningDocument/master/docs/image/stack.png)
+![](https://raw.githubusercontent.com/Zhangrunping/learningDocument/master/docs/image/prototype3.png)
 最后一个 null，设计上是为了避免死循环设置的，Object.prototype 的隐式原型指向 null
 
 ## 一个方法

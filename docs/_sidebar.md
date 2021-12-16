@@ -8,11 +8,13 @@
   - [事件机制](/blog/eventMechanism.md)
   - [节流防抖](/blog/throttleAndDebounce.md)
   - [深浅拷贝](/blog/copy.md)
-  - [异步机制](/blog/async.md)
-  - [this 指向](/blog/this.md)
+  - [Promise 与 async/await](/blog/async.md)
+  - [事件循环机制(Event Loop)](/blog/eventLoop.md)
+  - [this 绑定](/blog/this.md)
 
 - CSS
 
   - [布局](/blog/layout.md)
 
 - React
+<!-- - [react 生命周期] -->
