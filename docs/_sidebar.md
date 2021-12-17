@@ -17,4 +17,4 @@
   - [布局](/blog/layout.md)
 
 - React
-<!-- - [react 生命周期] -->
+- [生命周期]
