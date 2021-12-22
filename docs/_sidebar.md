@@ -17,4 +17,8 @@
   - [布局](/blog/layout.md)
 
 - React
-- [生命周期]
+  - [React生命周期](/blog/reactLifecycle.md)
+
+- JavaScript手写
+
+   - [方法实现](/blog/seal.md) 
