@@ -8,7 +8,7 @@
   - [事件循环(Event Loop)](/blog/eventLoop.md)
   - [this 指向](/blog/this.md)
   - [闭包](/blog/closure.md)
-  - [事件机制](/blog/eventMechanism.md)
+  - [DOM事件机制](/blog/eventMechanism.md)
   - [节流防抖](/blog/throttleAndDebounce.md)
   - [深浅拷贝](/blog/copy.md)
 
@@ -17,6 +17,7 @@
   - [布局](/blog/layout.md)
 
 - React
+
   - [React生命周期](/blog/reactLifecycle.md)
 
 - JavaScript手写

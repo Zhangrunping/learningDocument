@@ -11,14 +11,12 @@
   
 </body>
 <script>
-  console.log(typeof null);
-  console.log(typeof '');
-  console.log(typeof true);
-  console.log(typeof 1);
-  console.log(typeof Symbol());
-  console.log(typeof {});
-  console.log(typeof []);
+  function addA(a){
+    console.log(a + b); // 3
+    console.log(c);     // 报错
+  }
 
-
+  var b = 1
+  addA(2)
 </script>
 </html>
