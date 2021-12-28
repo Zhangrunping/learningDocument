@@ -11,12 +11,28 @@
   
 </body>
 <script>
-  function addA(a){
-    console.log(a + b); // 3
-    console.log(c);     // 报错
-  }
+  const User =  (function (){
+    // 定义私有变量
+    let _passWord;
 
-  var b = 1
-  addA(2)
+    class User {
+      constructor(userName, passWord){
+        _passWord = passWord
+        this.userName = userName
+      }
+
+      login(){
+        console.log(this.userName, _passWord)
+      }
+    }
+
+    return User;
+  })()
+
+  let user = new User('zzp', 123456)
+  console.log(user.userName)
+  console.log(user.passWord)
+  console.log(user._passWord)
+  user.login()
 </script>
 </html>
