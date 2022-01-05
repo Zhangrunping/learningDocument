@@ -160,7 +160,142 @@
 
 > 模拟私有变量
 
-> 偏函数与柯里化
+```
+  const User =  (function (){
+    // 定义私有变量
+    let _passWord;
+
+    class User {
+      constructor(userName, passWord){
+        _passWord = passWord
+        this.userName = userName
+      }
+
+      login(){
+        console.log(this.userName, _passWord)
+      }
+    }
+
+    return User;
+  })()
+```
+
+> 柯里化
+
+柯里化是指将多个入参的函数，转化为需要更少入参的函数的方法  
+柯里化是把接受 n 个参数的 1 个函数改造为只接受 1个参数的 n 个互相嵌套的函数的过程。也就是fn(a, b, c)会变成fn(a)(b)(c)
+
+```
+  function generateName (prefix){
+    return function (type){
+      return function (itemName){
+          return `${prefix}-${type}-${itemName}`
+      }
+    }
+  }
+
+
+  let getPrefix = generateName('丁丁网')
+  let getType = getPrefix('书籍')
+  let itemName1 = getType('JavaScript高级程序设计')
+  let itemName2 = getType('你不知道的JavaScript')
+  console.log(itemName1);               // 丁丁网-书籍-JavaScript高级程序设计
+  console.log(itemName2);               // 丁丁网-书籍-你不知道的JavaScript
+  console.log(generateName('大麦网')('生活用品')('毛巾'));           // 大麦网-生活用品-毛巾
+```
+
+
+> 偏函数
+
+偏函数是指固定函数的某一个或几个参数，然后返回一个新的函数(这个函数用于接收剩下的参数)  
+比如：有一个函数有10个入参，可以只固定2个参数入参，然后返回一个需要8个入参的函数
+
+```
+  function generateName(prefix){
+    return function (type, itemName){
+      return `${prefix}-${type}-${itemName}`
+    }
+  }
+
+  let getPrefix = generateName('丁丁网')
+
+  console.log(getPrefix('书籍', 'JavaScript高级程序设计'));
+  console.log(generateName('大麦网')('生活用品', '毛巾'));
+```
+
+#### 垃圾回收机制
+每隔一段时间，js的垃圾收集器就会对变量做'巡检'，当它判断一个变量不在被需要之后，它就会把这个变量所占用的内存空间给释放掉。这个过程叫做垃圾回收
+
+- 引用计数法
+  在引用计数法的机制下，内存中的每个值都会对应一个引用计数。当垃圾收集器感知到某个值的引用计数为0，就判断它'没用了'，随即这块内存就会被释放  
+  缺点：引用计数法无法甄别循环引用场景下的'垃圾'
+
+- 标记清除法
+  在标记清除算法中，一个变量是否被需要的判断标准，是它是否抵达
+  标记阶段：垃圾收集器会先找到根对象，在浏览器里是window，在node里是global。从根对象出发，垃圾收集器会扫描所有可以通过根对象触及的变量，这些对象会被标记为'可抵达'  
+  清除阶段：没有被标记为'可抵达'的变量，就会被认为是不需要的变量，这波变量就会被清除
+#### 闭包与内存泄漏
+
+> 内存泄漏
+
+该释放的变量(内存垃圾)没有被释放，仍然霸占着原有的内存不松手，导致内存占用不断攀高，带来性能恶化，系统崩溃等一列问题，这种现象就叫内存泄漏
+
+> 闭包是如何导致内存泄漏的
+
+```
+  var theThing = null;
+  var replaceThing = function () {
+    var originalThing = theThing;
+    var unused = function () {
+      if (originalThing) // 'originalThing'的引用
+      console.log("嘿嘿嘿");
+      };
+    theThing = {
+      longStr: new Array(1000000).join('*'),
+      someMethod: function () {
+        console.log("哈哈哈");
+      }
+    };
+  };
+setInterval(replaceThing, 1000);
+```
+
+这段代码里， unused 是一个不会被使用的闭包，但和它共享同一个父级作用域的 someMethod，则是一个 “可抵达”（也就意味着可以被使用）的闭包。unused 引用了 originalThing，这导致和它共享作用域的 someMethod 也间接地引用了 originalThing。结果就是 someMethod “被迫” 产生了对 originalThing 的持续引用，originalThing 虽然没有任何意义和作用，却永远不会被回收。不仅如此，originalThing 每次 setInterval 都会改变一次指向（指向最近一次的 theThing 赋值结果），这导致无法被回收的无用 originalThing 越堆积越多，最终导致严重的内存泄漏。
+
+> 内存泄漏成因分析
+- 全局变量  
+  ```
+    function test(){
+      name = 'zzp'
+   }
+  ```  
+
+- 忘记清除setInterval和setTimeout
+  ```
+    setTimeout(function (){
+      // ....
+    },1000)
+
+    setInterval(function (){
+      // ....
+    });
+  ```
+
+> 清除不当的DOM
+  ```
+    const myDiv = document.getElementById('myDiv')
+
+    function handleMyDiv() {
+      // 一些与myDiv相关的逻辑
+    }
+
+    // 使用myDiv
+    handleMyDiv()
+
+    // 尝试”删除“ myDiv
+    document.body.removeChild(document.getElementById('myDiv'));
+  ```
+
 
 
 
