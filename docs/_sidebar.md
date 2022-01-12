@@ -11,6 +11,7 @@
   - [DOM事件机制](/blog/eventMechanism.md)
   - [节流防抖](/blog/throttleAndDebounce.md)
   - [深浅拷贝](/blog/copy.md)
+  - [变量提升与暂时性死区](/blog/variablePromotions.md)
 
 - CSS
 

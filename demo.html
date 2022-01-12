@@ -12,15 +12,103 @@
   <input id='ipt' type="text">
 </body>
 <script> 
-  var name = 'xiaozhang'
-  var tel = '123456'
 
-  function getMe (){
-    return {
-      name,
-      tel
-    }
+function CutePromise (executor){
+  // value 记录异步任务成功的执行结果
+  this.value = null
+  // reason 记录异步任务失败的原因
+  this.reason = null
+  // status 记录当前状态，初始化是pending
+  this.status = 'pending'
+
+  // 缓存两个队列， 维护resolved和rejected各自对应的处理函数
+  this.onResolvedQueue = [];
+  this.onRejectedQueue = [];
+
+  // 保存this
+  var self = this;
+
+  // 定义 resolve 函数
+  function resolve(value){
+    // 如果不是pending状态，直接返回
+    if(self.status !== 'pending') return;
+
+    // 异步任务成功，把结果赋值给value
+    self.value = value
+    // 当前状态切换为 resolved
+    self.status = 'resolved'
+    // 用setTimeout 延迟队列任务的执行
+    setTimeout(function (){
+      self.onResolvedQueue.forEach(resolved => resolved(self.value))
+    })
   }
+
+  // 定义 reject 函数
+  function reject(reason){
+    // 如果不是pending状态，直接返回
+    if(self.status !== 'pending') return;
+    // 异步任务失败，把结果赋值给reason
+    self.reason = reason
+    // 当前状态切换为 reason
+    self.status = 'rejected'
+    // 用setTimeout 延迟队列任务的执行
+    setTimeout(function (){
+      // 批量执行 rejected队列里的任务
+      self.onRejectedQueue.forEach(rejected => rejected(self.reason))
+    })
+  }
+
+  // 把resolve和reject能力赋予执行器
+  executor(resolve, reject)
+}
+
+CutePromise.prototype.then = function (onResolved, onRejected) {
+  // 注意：onResolved和onRejected 必须是函数；如果不是，我们此处用一个透传来兜底
+  if(typeof onResolved !== 'function') {
+    onResolved = function (x) {return x}
+  }
+
+  if(typeof onRejected !== 'function') {
+    onRejected = function (e) {throw e}
+  }
+
+  // 保存this
+  var self = this;
+  // 判断是否是resolved状态
+  if(self.status === 'resolved') {
+    // 如果是 执行对应的处理方法
+    onResolved(self.value)
+  }else if(self.status === 'rejected') {
+    // 若是rejected状态，则执行rejected对应方法
+    onRejected(self.reason)
+  }else if(self.status === 'pending') {
+    // 若是pending状态，则只对任务做入队处理
+    self.onResolvedQueue.push(onResolved)
+    self.onRejectedQueue.push(onRejected)
+  }
+
+  return this;
+}
+const cutePromise = new CutePromise(function (resolve, reject) {
+    resolve('成了');
+});
+cutePromise.then((value) => {
+    console.log(value)
+    console.log('我是第 1 个任务')
+    return '第一个任务的结果'
+}).then(value => {
+    // 此处 value 期望输出 '第 1 个任务的结果'
+    console.log('第二个任务尝试拿到第 1 个任务的结果是:', value)
+});
+
+
+var me = 'xiaozhang'
+
+{
+  me = 'bear'
+  let me
+}
+
 
 </script>
 </html>
